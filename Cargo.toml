@@ -1,7 +1,9 @@
 [package]
-name = "nagad_api"
+name = "nagad_sdk"
 version = "0.1.0"
 edition = "2024"
+repository = "https://github.com/Junaid433/nagad_sdk/"
+lisence = "MIT"
 
 [dependencies]
 base64 = "0.22"
