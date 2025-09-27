@@ -1,6 +1,6 @@
-# Nagad API (Rust Port)
+# Nagad SDK (Rust Port)
 
-A complete Rust translation of the original PHP Nagad payment gateway client. The crate exposes the same feature set (configuration management, checkout orchestration, helper utilities, and verification helpers) in an idiomatic Rust API.
+A complete Rust translation of the original PHP Nagad payment gateway client. The crate exposes the same feature set (configuration management, checkout orchestration, helper utilities, and verification helpers) in an idiomatic Rust SDK.
 
 ## Overview
 - Mirrors the PHP SDK flow: initialize checkout, submit order, receive callback URL, and verify payments.
@@ -16,7 +16,7 @@ A complete Rust translation of the original PHP Nagad payment gateway client. Th
 Add the crate to your project. When developing locally you can depend on the checked-out path:
 
 ```bash
-cargo add nagad_api --path /absolute/path/to/nagad_api
+cargo add nagad_SDK
 ```
 
 Or point Cargo to the Git repository directly:
@@ -24,7 +24,7 @@ Or point Cargo to the Git repository directly:
 ```toml
 # Cargo.toml
 [dependencies]
-nagad_api = { git = "https://github.com/your-org/nagad-api-rust.git", tag = "v0.1.0" }
+nagad_sdk = { git = "https://github.com/Junaid433/nagad_sdk" }
 ```
 
 ## Configuration Model
@@ -57,11 +57,11 @@ Parameters for a single payment request are modeled with `PaymentParams`:
 
 ### Quick Start Example
 ```rust
-use nagad_api::model::{BaseConfig, PaymentParams};
-use nagad_api::nagad::NagadBase;
-use nagad_api::utils::generate_fake_invoice;
+use nagad_sdk::model::{BaseConfig, PaymentParams};
+use nagad_sdk::nagad::NagadBase;
+use nagad_sdk::utils::generate_fake_invoice;
 
-fn main() -> nagad_api::error::Result<()> {
+fn main() -> nagad_sdk::error::Result<()> {
     let config = BaseConfig {
         nagad_app_env: "development".into(),
         nagad_app_account: Some("ACCOUNT".into()),
@@ -89,7 +89,7 @@ fn main() -> nagad_api::error::Result<()> {
 When Nagad redirects the customer back to your callback endpoint, the redirect URL will include query parameters such as `payment_ref_id`, `status`, and `status_code`. Use `utils::success_response` to parse a full URL into a `HashMap<String, String>`:
 
 ```rust
-use nagad_api::utils::success_response;
+use nagad_sdk::utils::success_response;
 
 fn parse_callback(url: &str) {
     match success_response(url) {
@@ -123,7 +123,7 @@ The `utils` module includes several helpers:
 - `client_ip` returns the best-effort client IP sourced from environment variables, mirroring the PHP implementation.
 
 ## Error Handling
-Most functions return `nagad_api::error::Result<T>`, which aliases `Result<T, NagadError>`. Key variants include:
+Most functions return `nagad_sdk::error::Result<T>`, which aliases `Result<T, NagadError>`. Key variants include:
 - `InvalidConfiguration` and `MissingParam` for configuration/parameter validation failures.
 - `PublicKey` and `PrivateKey` when RSA operations fail.
 - `Http`, `Json`, and `UrlParse` for transport and serialization problems.
